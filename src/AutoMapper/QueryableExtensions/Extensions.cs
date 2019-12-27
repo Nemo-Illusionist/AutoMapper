@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper.QueryableExtensions.Impl;
+using AutoMapper;
 
 namespace AutoMapper.QueryableExtensions
 {
@@ -63,5 +64,15 @@ namespace AutoMapper.QueryableExtensions
         /// <returns>Queryable result, use queryable extension methods to project and execute result</returns>
         public static IQueryable<TDestination> ProjectTo<TDestination>(this IQueryable source, IConfigurationProvider configuration, IDictionary<string, object> parameters, params string[] membersToExpand) 
             => new ProjectionExpression(source, configuration.ExpressionBuilder).To<TDestination>(parameters, membersToExpand);
+        
+        /// <summary>
+        /// Projects the source type to the destination type given the mapping configuration
+        /// </summary>
+        /// <typeparam name="TDestination">Destination type to map to</typeparam>
+        /// <param name="source">Queryable source</param>
+        /// <param name="mapper">Mapper instanced</param>
+        /// <returns>Queryable result, use queryable extension methods to project and execute result</returns>
+        public static IQueryable<TDestination> ProjectTo<TDestination>(this IQueryable source, IMapper mapper)
+            => mapper.ProjectTo<TDestination>(source)
     }
 }
